@@ -9,6 +9,7 @@ type Commands struct {
 	Pwd func()string
 	Env func()string
 	Ls func(bool)string
+	Rename func(string, string)string
 }
 
 var Command = Commands{
@@ -16,4 +17,5 @@ var Command = Commands{
 	Pwd: tools.Pwd,
 	Env: tools.Env,
 	Ls: tools.Ls,
+	Rename: tools.Rename,
 }

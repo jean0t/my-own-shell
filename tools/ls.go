@@ -29,7 +29,7 @@ func Ls(moreInfo bool) string {
 
 		}
 
-		return strings.Join(results, " \t ") + "\n"
+		return strings.Join(results, "\t") + "\n"
 
 	} else {
 
@@ -42,7 +42,7 @@ func Ls(moreInfo bool) string {
 				if info.IsDir() {
 					IsDirectory = "D"
 				}
-				results = append(results, fmt.Sprintf("%s\t%s\t%d bytes", IsDirectory, info.Name(), info.Size()))
+				results = append(results, fmt.Sprintf("%s\t%s\t%15d bytes", IsDirectory, info.Name(), info.Size()))
 			}
 
 		return strings.Join(results, "\n") + "\n"

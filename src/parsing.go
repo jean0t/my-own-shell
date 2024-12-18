@@ -25,16 +25,24 @@ func emptyArgument(argument []string) bool {
 }
 
 func Parse(input string) string {
+
 	var parsedInput = strings.Fields(input)
+
 	if len(parsedInput) < 2 && len(parsedInput) > 0 {
+
 		arg.Command = parsedInput[0]
 		arg.Args = []string{""}
+
 	} else if len(parsedInput) >= 2 {
+
 		arg.Command = parsedInput[0]
 		arg.Args = parsedInput[1:]
+
 	} else {
+
 		arg.Command = ""
 		arg.Args = []string{""}
+
 	}
 
 	switch(arg.Command) {
@@ -52,6 +60,13 @@ func Parse(input string) string {
 				return Command.Ls(false)
 			} else {
 				return Command.Ls(true)
+			}
+
+		case "rename":
+			if len(arg.Args) == 2 {
+				return Command.Rename(arg.Args[0], arg.Args[1])
+			} else {
+				return "Not enough arguments\n"
 			}
 
 		case "":
