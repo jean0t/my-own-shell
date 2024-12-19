@@ -10,6 +10,7 @@ type Commands struct {
 	Env func()string
 	Ls func(bool)string
 	Rename func(string, string)string
+	Mkdir func(string)string
 }
 
 var Command = Commands{
@@ -18,4 +19,5 @@ var Command = Commands{
 	Env: tools.Env,
 	Ls: tools.Ls,
 	Rename: tools.Rename,
+	Mkdir: tools.Mkdir,
 }

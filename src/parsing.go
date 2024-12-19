@@ -77,6 +77,12 @@ func Parse(input string) string {
 			os.Exit(0)
 			return ""
 
+		case "mkdir":
+			if len(arg.Args) == 1 {
+				return Command.Mkdir(arg.Args[0])
+			}
+			return "Pass a name for the directory\n"
+
 		default:
 			var cmd = exec.Command(arg.Command, arg.Args...)
 			err := cmd.Run()
