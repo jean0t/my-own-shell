@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+	"os"
 	"os/exec"
 )
 
@@ -70,6 +71,10 @@ func Parse(input string) string {
 			}
 
 		case "":
+			return ""
+
+		case "exit":
+			os.Exit(0)
 			return ""
 
 		default:
