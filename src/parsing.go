@@ -57,7 +57,7 @@ func Parse(input string) string {
 			return Command.Env()
 
 		case "ls":
-			if emptyArgument(arg.Args) {
+			if emptyArgument(arg.Args) || arg.Args[0] != "-l" {
 				return Command.Ls(false)
 			} else {
 				return Command.Ls(true)
