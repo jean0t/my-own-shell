@@ -6,5 +6,5 @@ import (
 )
 func Cd(path string) string {
 	_ = os.Chdir(path)
-	return fmt.Sprintf("You are now in: %s\n", Pwd())
+	return fmt.Sprintf("You are now in: %s", Pwd())
 }
