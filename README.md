@@ -52,3 +52,8 @@ We’d love to hear your thoughts! Reach out via GitHub Issues or start a discus
 
 Happy Shelling! 🐚✨
 
+# Example of usage
+
+https://github.com/user-attachments/assets/e62ffdec-162d-458b-8d3f-5f5159388039
+
+
