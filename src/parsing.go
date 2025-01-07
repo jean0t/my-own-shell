@@ -83,6 +83,13 @@ func Parse(input string) string {
 			}
 			return "Pass a name for the directory\n"
 
+		case "ping":
+			if len(arg.Args) > 0 && !emptyArgument(arg.Args) {
+				return Command.Ping(arg.Args[0])
+			} else {
+				return "An error has occurred\n"
+			}
+
 		default:
 			var cmd = exec.Command(arg.Command, arg.Args...)
 			err := cmd.Run()

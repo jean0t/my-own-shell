@@ -11,6 +11,7 @@ type Commands struct {
 	Ls func(bool)string
 	Rename func(string, string)string
 	Mkdir func(string)string
+	Ping func(string)string
 }
 
 var Command = Commands{
@@ -20,4 +21,5 @@ var Command = Commands{
 	Ls: tools.Ls,
 	Rename: tools.Rename,
 	Mkdir: tools.Mkdir,
+	Ping: tools.Ping,
 }
