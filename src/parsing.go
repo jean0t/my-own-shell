@@ -1,38 +1,63 @@
 package main
 
 import (
-	"strings"
 	"os"
 	"os/exec"
 )
+//==================================================================
 
+// Important structure to organization
 type Arg struct {
-	Command string
-	Args []string
+	Command string // command is considered the first word being called
+	Args []string // argument is considered everything after command
 }
 
-type ShellFunction func([]byte) string
+var arg Arg // it will hold the user input and separate in command/Args
 
-var arg Arg
 
-func emptyArgument(argument []string) bool {
-	for _, v := range argument {
-		if string(v) == "" {
-			return true
-		}
-	}
+func SanitizeInput(input string) []string {
 
-	return false
+  var result []string = []string{}
+  var tmp string = ""
+  var quoted bool = false
+  for i, v := range input {
+    switch {
+      case v == ' ' && quoted == false :
+        result = append(result, tmp)
+        tmp = ""
+
+      case i == len(input) - 1 && v != ' ':
+        tmp += string(v)
+        result = append(result, tmp)
+        tmp = ""
+
+      case v == '\'' || v == '"':
+        if !quoted {
+          quoted = true
+          tmp += string(v)
+          continue
+        } else {
+          quoted = false
+          tmp += string(v)
+          continue
+        }
+
+      default:
+        tmp += string(v)
+    }
+  }
+  return result
 }
+
 
 func Parse(input string) string {
 
-	var parsedInput = strings.Fields(input)
+	var parsedInput []string = SanitizeInput(input)
 
 	if len(parsedInput) < 2 && len(parsedInput) > 0 {
 
 		arg.Command = parsedInput[0]
-		arg.Args = []string{""}
+		arg.Args = []string{}
 
 	} else if len(parsedInput) >= 2 {
 
@@ -42,7 +67,7 @@ func Parse(input string) string {
 	} else {
 
 		arg.Command = ""
-		arg.Args = []string{""}
+		arg.Args = []string{}
 
 	}
 
@@ -57,10 +82,13 @@ func Parse(input string) string {
 			return Command.Env()
 
 		case "ls":
-			if emptyArgument(arg.Args) || arg.Args[0] != "-l" {
-				return Command.Ls(false)
+			if len(arg.Args) > 0 {
+        if arg.Args[0] == "-l" {
+				  return Command.Ls(true)
+        }
+        return ""
 			} else {
-				return Command.Ls(true)
+				return Command.Ls(false)
 			}
 
 		case "rename":
@@ -84,17 +112,24 @@ func Parse(input string) string {
 			return "Pass a name for the directory\n"
 
 		case "ping":
-			if len(arg.Args) > 0 && !emptyArgument(arg.Args) {
+			if len(arg.Args) > 0 && !(arg.Args[0] == "") {
 				return Command.Ping(arg.Args[0])
 			} else {
 				return "An error has occurred\n"
 			}
 
 		default:
-			var cmd = exec.Command(arg.Command, arg.Args...)
+      var cmd *exec.Cmd
+      if len(arg.Args) > 0 {
+			  cmd = exec.Command(arg.Command, arg.Args...)
+      } else {
+        cmd = exec.Command(arg.Command)
+      }
+      cmd.Stdout = os.Stdout
+      cmd.Stderr = os.Stderr
 			err := cmd.Run()
 			if err != nil {
-				return "An error occurred\n"
+				return ""
 			}
 
 			return ""
