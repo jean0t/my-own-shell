@@ -12,7 +12,7 @@ func Ls(moreInfo bool) string {
 	if err != nil {
 		return "Error reading directory"
 	}
-
+	
 	if !moreInfo {
 
 		for _, entry := range entries {
@@ -22,27 +22,33 @@ func Ls(moreInfo bool) string {
 			}
 
 			if entry.IsDir() {
-				results = append(results, fmt.Sprintf("%s/", info.Name()))
+        			if len(info.Name()) > 20 {
+					results = append(results, fmt.Sprintf("%s/\n", info.Name()))
+        			} else {
+          				results = append(results, fmt.Sprintf("%20s/", info.Name()))
+        			}
 			} else {
-				results = append(results, info.Name())
+        			if len(info.Name()) > 20{
+					results = append(results, fmt.Sprintf("%s\n", info.Name()))
+        			} else {
+        				results = append(results, fmt.Sprintf("%20s", info.Name()))
+        			}
 			}
-
 		}
-
-		return strings.Join(results, "\t") + "\n"
+		return strings.Join(results, "\n") + "\n"
 
 	} else {
 
 		for _, entry := range entries {
-				var IsDirectory string = "ND"
+				var IsDirectory string = "d"
 				info, err := entry.Info()
 				if err != nil {
-					return "Error getting file info"
+					return "Error getting file info\n"
 				}
 				if info.IsDir() {
-					IsDirectory = "D"
+					IsDirectory = "-"
 				}
-				results = append(results, fmt.Sprintf("%s\t%s\t%15d bytes", IsDirectory, info.Name(), info.Size()))
+				results = append(results, fmt.Sprintf("%s%20s%15d bytes", IsDirectory, info.Name(), info.Size()))
 			}
 
 		return strings.Join(results, "\n") + "\n"
